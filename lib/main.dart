@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_phone_contacts/core/constants/home.dart';
 import 'package:my_phone_contacts/feature/contacts/read_contacts.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const ReadContacts(),
+      home: const Home(),
     );
   }
 }

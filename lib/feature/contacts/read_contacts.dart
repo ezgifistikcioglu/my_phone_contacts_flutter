@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
+import 'package:my_phone_contacts/feature/contacts/dump_contact_list.dart';
 import 'package:my_phone_contacts/feature/contacts/globals.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,8 +15,6 @@ class ReadContacts extends StatefulWidget {
 
 class _ReadContactsState extends State<ReadContacts> {
   late List<Contact> listContacts;
-  final _cSearch = TextEditingController();
-  bool searching = false;
 
   @override
   void initState() {
@@ -26,20 +25,19 @@ class _ReadContactsState extends State<ReadContacts> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: Globals.scaffoldKey,
-      appBar: _appBar(context),
-      body: Container(
-        child: (listContacts.isNotEmpty)
-            ? _listViewBuilderForContactList
-            : Center(
-                child: _contactProgressIndicatorColumn,
-              ),
-      ),
+    return Container(
+      child: (listContacts.isNotEmpty)
+          ? _listViewBuilderForContactList()
+          : Center(
+              child: _contactProgressIndicatorColumn,
+            ),
     );
   }
 
-  Widget get _listViewBuilderForContactList => ListView.builder(
+  ListView _listViewBuilderForContactList() => ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: listContacts.length,
       itemBuilder: (context, index) {
         Contact? contact = listContacts.get(index);
@@ -61,6 +59,7 @@ class _ReadContactsState extends State<ReadContacts> {
   CircleAvatar _circleAvatarForList(Contact? contact) {
     return CircleAvatar(
       backgroundColor: kPinkColor,
+      //backgroundImage: NetworkImage(profile),
       child: _circleAvatarFeatures(contact),
     );
   }
@@ -79,57 +78,6 @@ class _ReadContactsState extends State<ReadContacts> {
             ),
     );
   }
-
-  AppBar _appBar(BuildContext context) => AppBar(
-        title: appBarTitleText,
-        backgroundColor: kPurpleColor,
-        actions: <Widget>[_searchIconButton, _appBarRightIcon(context)],
-      );
-
-  Widget get _searchIconButton => IconButton(
-        icon: actionIcon,
-        onPressed: () {
-          setState(() {
-            if (actionIcon.icon == Icons.search) {
-              actionIcon = Icon(
-                Icons.close,
-                color: kGrayColor,
-              );
-              appBarTitleText = _appBarTitleTextField;
-            } else {
-              _cSearch.clear();
-              searching = false;
-              actionIcon = const Icon(
-                Icons.search,
-              );
-              appBarTitleText = const Text("Contatos");
-              // bloc.getListContact();
-            }
-          });
-        },
-      );
-
-  Widget get _appBarTitleTextField => TextField(
-        //controller: _cSearch,
-        style: TextStyle(
-          color: kGrayColor,
-        ),
-        autofocus: true,
-        decoration: _appBarSearchInput,
-      );
-
-  InputDecoration get _appBarSearchInput => InputDecoration(
-      prefixIcon: Icon(Icons.search, color: kGrayColor),
-      hintText: searchLabelText,
-      hintStyle: TextStyle(color: kGrayColor));
-
-  Widget _appBarRightIcon(BuildContext context) => IconButton(
-        icon: const Icon(Icons.more_vert_rounded),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-      );
 
   InkWell _contactListTrailingCustomize(Contact contact) => InkWell(
         child: _contactIconFeatures,

@@ -14,6 +14,7 @@ Color kCaptionColor = const Color.fromRGBO(163, 177, 187, 1);
 /// Strings
 const String readContactText = "Reading Contacts...";
 Widget appBarTitleText = const Text("Get Phone Contact List");
+Widget addContactAppBarTitleText = const Text("Select Contact");
 const String searchLabelText = "Search contact name";
 
 /// Icons
@@ -49,4 +50,4 @@ Widget createIcon(IconData? icon, Color color, {double? size}) => Icon(
       size: size ?? 24.0,
     );
 EdgeInsetsGeometry smallPadding(BuildContext context) =>
-    EdgeInsets.only(top: getHeight(context) * 0.01);
+    EdgeInsets.all(getHeight(context) * 0.02);
