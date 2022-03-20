@@ -26,7 +26,15 @@ class _ReadContactsState extends State<ReadContacts> {
   Widget build(BuildContext context) {
     return Container(
       child: (listContacts.isNotEmpty)
-          ? _listViewBuilderForContactList()
+          ? Column(
+              children: [
+                Text(
+                  "Your total contact number: ${listContacts.length}",
+                  style: newsletterTextStyle(kDangerColor, 12, null, null),
+                ),
+                _listViewBuilderForContactList(),
+              ],
+            )
           : Center(
               child: _contactProgressIndicatorColumn,
             ),
@@ -81,7 +89,7 @@ class _ReadContactsState extends State<ReadContacts> {
   InkWell _contactListTrailingCustomize(Contact contact) => InkWell(
         child: _contactIconFeatures,
         onTap: () {
-          _makePhoneCall("tel:${contact.phones.length.gcd(0)}");
+          _makePhoneCall("tel://${contact.phones.first.value}");
         },
       );
 
@@ -91,7 +99,7 @@ class _ReadContactsState extends State<ReadContacts> {
       );
 
   Column get _contactProgressIndicatorColumn => Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [_contactProgressIndicator, const Text(readContactText)],
       );
 
@@ -111,8 +119,9 @@ class _ReadContactsState extends State<ReadContacts> {
   readContacts() async {
     final PermissionStatus permissionStatus = await _getPermission();
     if (permissionStatus == PermissionStatus.granted) {
+      listContacts.toSet().toList();
+
       Contacts.streamContacts().forEach((contact) {
-        //print("${contact.displayName}");
         setState(() {
           listContacts.add(contact);
         });
