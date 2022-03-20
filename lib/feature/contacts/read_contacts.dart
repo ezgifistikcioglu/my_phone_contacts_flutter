@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
 import 'package:my_phone_contacts/feature/contacts/dump_contact_list.dart';
-import 'package:my_phone_contacts/feature/contacts/globals.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 

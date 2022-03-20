@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
 import 'package:my_phone_contacts/feature/contacts/add_contact.dart';
-import 'package:my_phone_contacts/feature/contacts/dump_contact_list.dart';
-import 'package:my_phone_contacts/feature/contacts/globals.dart';
 import 'package:my_phone_contacts/feature/contacts/read_contacts.dart';
+import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
+import 'package:my_phone_contacts/feature/contacts/share/widget/share_text_widget.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,18 +13,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _cSearch = TextEditingController();
   bool searching = false;
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Globals.scaffoldKey,
+      key: _scaffoldKey,
       appBar: _appBar(context),
+      bottomNavigationBar: buildBottomBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [ReadContacts()],
+          children: [buildPages()],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -45,6 +48,41 @@ class _HomeState extends State<Home> {
         backgroundColor: kPurpleColor,
         actions: <Widget>[_searchIconButton, _appBarRightIcon(context)],
       );
+
+  Widget buildBottomBar() => BottomNavigationBar(
+        backgroundColor: kPurpleColor,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        currentIndex: index,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contact_page_sharp),
+            label: 'Get contacts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.link),
+            label: 'Share text',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.file_copy),
+            label: 'Share files',
+          ),
+        ],
+        onTap: (int index) => setState(() => this.index = index),
+      );
+
+  Widget buildPages() {
+    switch (index) {
+      case 0:
+        return const ReadContacts();
+      case 1:
+        return const ShareTextWidget();
+      case 2:
+        return const ShareFilesWidget();
+      default:
+        return Container();
+    }
+  }
 
   Widget get _searchIconButton => IconButton(
         icon: actionIcon,
