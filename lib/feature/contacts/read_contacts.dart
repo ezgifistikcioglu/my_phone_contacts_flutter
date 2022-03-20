@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
-import 'package:my_phone_contacts/feature/contacts/dump_contact_list.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -119,17 +118,14 @@ class _ReadContactsState extends State<ReadContacts> {
   readContacts() async {
     final PermissionStatus permissionStatus = await _getPermission();
     if (permissionStatus == PermissionStatus.granted) {
-      listContacts.toSet().toList();
-
       Contacts.streamContacts().forEach((contact) {
         setState(() {
-          listContacts.add(contact);
+          if (!listContacts.contains(contact)) {
+            listContacts.add(contact);
+          }
         });
       });
     }
-
-    // You can manually adjust the buffer size
-    //return  Contacts.streamContacts(bufferSize: 10);
   }
 
   //Check contacts permission
