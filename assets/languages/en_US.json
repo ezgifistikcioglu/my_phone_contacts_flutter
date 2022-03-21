@@ -1,0 +1,15 @@
+{
+    "account": "Account",
+    "country": "Country",
+    "data_usage": "Data Usage",
+    "english": "English",
+    "app_title": "Telephone Directory",
+    "notifactions": "Notifications",
+    "permissions": "Permissions",
+    "phone_language": "Phone Language",
+    "privacy": "Privacy",
+    "turkish": "Turkish",
+    "get_contacts": "Get contacts",
+    "share_text": "Share text",
+    "share_files": "Share files"
+  }

@@ -4,6 +4,8 @@ import 'package:my_phone_contacts/feature/contacts/add_contact.dart';
 import 'package:my_phone_contacts/feature/contacts/read_contacts.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_text_widget.dart';
+import 'package:my_phone_contacts/feature/language/app_localizations.dart';
+import 'package:my_phone_contacts/widgets/change_language_dialog.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -44,9 +46,23 @@ class _HomeState extends State<Home> {
   }
 
   AppBar _appBar(BuildContext context) => AppBar(
-        title: appBarTitleText,
+        title: Text(context.translate('app_title')),
         backgroundColor: kPurpleColor,
-        actions: <Widget>[_searchIconButton, _appBarRightIcon(context)],
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.language,
+            ),
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                builder: (context) => const ChangeLanguageDialog(),
+              );
+            },
+          ),
+          _searchIconButton,
+          _appBarRightIcon(context)
+        ],
       );
 
   Widget buildBottomBar() => BottomNavigationBar(
@@ -54,18 +70,18 @@ class _HomeState extends State<Home> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         currentIndex: index,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.contact_page_sharp),
-            label: 'Get contacts',
+            icon: const Icon(Icons.contact_page_sharp),
+            label: context.translate('get_contacts'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.link),
-            label: 'Share text',
+            icon: const Icon(Icons.link),
+            label: context.translate('share_text'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_copy),
-            label: 'Share files',
+            icon: const Icon(Icons.file_copy),
+            label: context.translate('share_files'),
           ),
         ],
         onTap: (int index) => setState(() => this.index = index),
