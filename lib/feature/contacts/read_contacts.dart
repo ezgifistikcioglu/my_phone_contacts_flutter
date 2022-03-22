@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
+import 'package:full_text_search/full_text_search.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
+import 'package:my_phone_contacts/feature/contacts/person_details_page.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sunny_dart/sunny_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ReadContacts extends StatefulWidget {
@@ -13,12 +16,66 @@ class ReadContacts extends StatefulWidget {
 
 class _ReadContactsState extends State<ReadContacts> {
   late List<Contact> listContacts;
+  late ContactService _contactService;
+  String? searchTerm;
+  final String _searchTerm = '';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     listContacts = [];
+    _contactService = UnifiedContacts;
+    refreshContacts();
     readContacts();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> refreshContacts([bool showIndicator = true]) async {
+    if (showIndicator) {
+      setState(() {});
+    }
+    List<Contact> _newList;
+    if (_searchTerm.isNotNullOrBlank) {
+      _newList = [
+        ...await FullTextSearch<Contact>.ofStream(
+          term: _searchTerm,
+          items: _contactService.streamContacts(),
+          tokenize: (contact) {
+            return [
+              contact.givenName,
+              contact.familyName,
+              ...contact.phones
+                  .expand((number) => tokenizePhoneNumber(number.value)),
+            ].where((s) => s != null && s != '').toList();
+          },
+          ignoreCase: true,
+          isMatchAll: true,
+          isStartsWith: true,
+        ).execute().then((results) => [
+              for (var result in results) result.result,
+            ])
+      ];
+    } else {
+      final contacts = _contactService.listContacts(
+          withUnifyInfo: true,
+          withThumbnails: true,
+          withHiResPhoto: false,
+          sortBy: const ContactSortOrder.firstName());
+      var tmp = <Contact>[];
+      while (await contacts.moveNext()) {
+        (await contacts.current)?.let((self) => tmp.add(self));
+      }
+      _newList = tmp;
+    }
+    setState(() {
+      if (showIndicator) {}
+      listContacts = _newList;
+    });
   }
 
   @override
@@ -29,7 +86,7 @@ class _ReadContactsState extends State<ReadContacts> {
               children: [
                 Text(
                   "Your total contact number: ${listContacts.length}",
-                  style: newsletterTextStyle(kDangerColor, 12, null, null),
+                  style: newsletterTextStyle(kPurpColor, 15, null, null),
                 ),
                 _listViewBuilderForContactList(),
               ],
@@ -59,12 +116,28 @@ class _ReadContactsState extends State<ReadContacts> {
         subtitle: Text((contact!.phones.isNotEmpty)
             ? "${contact.phones.get(0)}"
             : "No contact"),
+        onTap: () async {
+          final _contact =
+              await _contactService.getContact(contact.identifier!);
+          final res = await Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return PersonDetailsPage(
+              _formKey,
+              _contact!,
+              contactOnDeviceHasBeenUpdated,
+              _contactService,
+            );
+          }));
+          if (res != null) {
+            await refreshContacts();
+          }
+        },
         trailing: _contactListTrailingCustomize(contact));
   }
 
   CircleAvatar _circleAvatarForList(Contact? contact) {
     return CircleAvatar(
-      backgroundColor: kPinkColor,
+      backgroundColor: kBlueColor,
       //backgroundImage: NetworkImage(profile),
       child: _circleAvatarFeatures(contact),
     );
@@ -80,7 +153,7 @@ class _ReadContactsState extends State<ReadContacts> {
             )
           : Icon(
               Icons.face,
-              color: kGrayColor,
+              color: kPurpColor,
             ),
     );
   }
@@ -94,7 +167,7 @@ class _ReadContactsState extends State<ReadContacts> {
 
   Icon get _contactIconFeatures => Icon(
         Icons.call,
-        color: kPurpleColor,
+        color: kBlueColor,
       );
 
   Column get _contactProgressIndicatorColumn => Column(
@@ -140,5 +213,13 @@ class _ReadContactsState extends State<ReadContacts> {
     } else {
       return permission;
     }
+  }
+
+  void contactOnDeviceHasBeenUpdated(Contact contact) {
+    setState(() {
+      var id =
+          listContacts.indexWhere((c) => c.identifier == contact.identifier);
+      listContacts[id] = contact;
+    });
   }
 }

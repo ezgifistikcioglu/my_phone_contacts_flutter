@@ -36,6 +36,8 @@ class _ShareFilesWidgetState extends State<ShareFilesWidget> {
                 onClicked: () async {
                   if (controller.text.isEmpty) {
                     Utils.showSnackbar(context, message: 'Enter a caption!');
+                  } else if (controller.text.contains(controller.text)) {
+                    Share.share(controller.text);
                   } else {
                     final filePaths = await pickFile();
 

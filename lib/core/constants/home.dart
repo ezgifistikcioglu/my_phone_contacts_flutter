@@ -3,7 +3,6 @@ import 'package:my_phone_contacts/core/constants/app_constants.dart';
 import 'package:my_phone_contacts/feature/contacts/add_contact.dart';
 import 'package:my_phone_contacts/feature/contacts/read_contacts.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
-import 'package:my_phone_contacts/feature/contacts/share/widget/share_text_widget.dart';
 import 'package:my_phone_contacts/feature/language/app_localizations.dart';
 import 'package:my_phone_contacts/widgets/change_language_dialog.dart';
 
@@ -33,7 +32,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kPurpleColor,
+        backgroundColor: kBlueColor,
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
@@ -47,8 +46,9 @@ class _HomeState extends State<Home> {
 
   AppBar _appBar(BuildContext context) => AppBar(
         title: Text(context.translate('app_title')),
-        backgroundColor: kPurpleColor,
+        backgroundColor: kBlueColor,
         actions: <Widget>[
+          _searchIconButton,
           IconButton(
             icon: const Icon(
               Icons.language,
@@ -60,13 +60,12 @@ class _HomeState extends State<Home> {
               );
             },
           ),
-          _searchIconButton,
           _appBarRightIcon(context)
         ],
       );
 
   Widget buildBottomBar() => BottomNavigationBar(
-        backgroundColor: kPurpleColor,
+        backgroundColor: kBlueColor,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         currentIndex: index,
@@ -76,11 +75,11 @@ class _HomeState extends State<Home> {
             label: context.translate('get_contacts'),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.link),
-            label: context.translate('share_text'),
+            icon: const Icon(Icons.backup),
+            label: context.translate('back_up'),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.file_copy),
+            icon: const Icon(Icons.share),
             label: context.translate('share_files'),
           ),
         ],
@@ -92,7 +91,7 @@ class _HomeState extends State<Home> {
       case 0:
         return const ReadContacts();
       case 1:
-        return const ShareTextWidget();
+        return const ShareFilesWidget();
       case 2:
         return const ShareFilesWidget();
       default:

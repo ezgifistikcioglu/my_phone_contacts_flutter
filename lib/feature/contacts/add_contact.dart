@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_contact/contacts.dart';
-import 'package:flutter_contact/flutter_contact.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
 
 class AddContactPage extends StatefulWidget {
@@ -21,7 +19,7 @@ class _AddContactPageState extends State<AddContactPage> {
     return Scaffold(
       appBar: AppBar(
         title: addContactAppBarTitleText,
-        backgroundColor: kPurpleColor,
+        backgroundColor: kBlueColor,
         actions: <Widget>[
           TextButton(
             onPressed: () {

@@ -3,7 +3,7 @@
     "country": "Country",
     "data_usage": "Data Usage",
     "english": "English",
-    "app_title": "Telephone Directory",
+    "app_title": "Contact List",
     "notifactions": "Notifications",
     "permissions": "Permissions",
     "phone_language": "Phone Language",
@@ -11,5 +11,6 @@
     "turkish": "Turkish",
     "get_contacts": "Get contacts",
     "share_text": "Share text",
-    "share_files": "Share files"
+    "share_files": "Share files",
+    "back_up": "Backup"
   }
