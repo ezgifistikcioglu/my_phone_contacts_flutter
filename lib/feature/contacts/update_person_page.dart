@@ -1,7 +1,10 @@
 import 'package:flexidate/flexidate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
+import 'package:my_phone_contacts/feature/language/app_localizations.dart';
 import 'package:sunny_dart/sunny_dart.dart';
+
+import '../../core/constants/app_constants.dart';
 
 class UpdatePersonPage extends StatefulWidget {
   const UpdatePersonPage({
@@ -49,7 +52,8 @@ class _UpdatePersonPageState extends State<UpdatePersonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Contact'),
+        title: Text(context.translate('update_contact')),
+        backgroundColor: kBlueColor,
         actions: <Widget>[
           IconButton(
             icon: const Icon(
@@ -67,11 +71,16 @@ class _UpdatePersonPageState extends State<UpdatePersonPage> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(12.0),
+        padding: smallEdgePadding(context),
         child: Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
+              textFormField(
+                contact.givenName,
+                'First name',
+                onSaved: (v) => contact.givenName = v,
+              ),
               TextFormField(
                 initialValue: contact.givenName ?? '',
                 decoration: const InputDecoration(labelText: 'First name'),

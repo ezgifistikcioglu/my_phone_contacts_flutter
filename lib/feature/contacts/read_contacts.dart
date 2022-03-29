@@ -26,8 +26,8 @@ class _ReadContactsState extends State<ReadContacts> {
     super.initState();
     listContacts = [];
     _contactService = UnifiedContacts;
-    refreshContacts();
     readContacts();
+    refreshContacts();
   }
 
   @override
@@ -91,9 +91,7 @@ class _ReadContactsState extends State<ReadContacts> {
                 _listViewBuilderForContactList(),
               ],
             )
-          : Center(
-              child: _contactProgressIndicatorColumn,
-            ),
+          : _contactProgressIndicatorColumn,
     );
   }
 
@@ -135,7 +133,7 @@ class _ReadContactsState extends State<ReadContacts> {
         trailing: _contactListTrailingCustomize(contact));
   }
 
-  CircleAvatar _circleAvatarForList(Contact? contact) {
+  Widget _circleAvatarForList(Contact? contact) {
     return CircleAvatar(
       backgroundColor: kBlueColor,
       //backgroundImage: NetworkImage(profile),
@@ -143,19 +141,17 @@ class _ReadContactsState extends State<ReadContacts> {
     );
   }
 
-  Center _circleAvatarFeatures(Contact? contact) {
-    return Center(
-      child: (contact?.avatar != null)
-          ? Image.memory(
-              contact!.avatar!,
-              height: 28,
-              width: 28,
-            )
-          : Icon(
-              Icons.face,
-              color: kPurpColor,
-            ),
-    );
+  Widget _circleAvatarFeatures(Contact? contact) {
+    return (contact?.avatar != null)
+        ? Image.memory(
+            contact!.avatar!,
+            height: 28,
+            width: 28,
+          )
+        : Icon(
+            Icons.face,
+            color: kPurpColor,
+          );
   }
 
   InkWell _contactListTrailingCustomize(Contact contact) => InkWell(
@@ -175,9 +171,10 @@ class _ReadContactsState extends State<ReadContacts> {
         children: [_contactProgressIndicator, const Text(readContactText)],
       );
 
-  CircularProgressIndicator get _contactProgressIndicator =>
-      const CircularProgressIndicator(
-        backgroundColor: Colors.red,
+  Widget get _contactProgressIndicator => const Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.red,
+        ),
       );
 
   Future<void> _makePhoneCall(String url) async {

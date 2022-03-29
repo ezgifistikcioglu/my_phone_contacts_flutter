@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
     /// Değişimini dinleyeceğimiz değişkene erişim için
     final watch = context.watch<LanguageProvider>();
     return MaterialApp(
-      title: 'My Phone Contacts',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: LanguageManager.instance.localizationsDelegates,
       supportedLocales: LanguageManager.instance.supportedLocales,

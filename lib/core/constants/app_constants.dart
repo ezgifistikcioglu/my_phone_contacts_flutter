@@ -45,10 +45,22 @@ TextStyle newsletterTextStyle(Color? color, double? fontSize,
         fontStyle: fontStyle ?? FontStyle.normal,
         fontSize: fontSize ?? 20,
         fontWeight: fontWeight ?? FontWeight.normal);
+
+TextFormField textFormField(String? initialValue, String? decoration,
+    {Function(String?)? onSaved}) {
+  return TextFormField(
+    initialValue: initialValue ?? '',
+    decoration: InputDecoration(labelText: decoration ?? ''),
+    onSaved: onSaved,
+  );
+}
+
 Widget createIcon(IconData? icon, Color color, {double? size}) => Icon(
       icon,
       color: color,
       size: size ?? 24.0,
     );
 EdgeInsetsGeometry smallPadding(BuildContext context) =>
+    EdgeInsets.all(getHeight(context) * 0.02);
+EdgeInsets smallEdgePadding(BuildContext context) =>
     EdgeInsets.all(getHeight(context) * 0.02);

@@ -4,6 +4,7 @@ import 'package:flutter_contact/contacts.dart';
 import 'package:my_phone_contacts/feature/contacts/tiles.dart';
 import 'package:my_phone_contacts/feature/contacts/update_person_page.dart';
 
+import '../../core/constants/app_constants.dart';
 import 'extensions.dart';
 
 class PersonDetailsPage extends StatefulWidget {
@@ -43,6 +44,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_contact.displayName ?? ''),
+        backgroundColor: kBlueColor,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.delete),

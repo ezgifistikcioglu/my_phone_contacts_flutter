@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
-import 'package:my_phone_contacts/feature/contacts/add_contact.dart';
 import 'package:my_phone_contacts/feature/contacts/read_contacts.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
 import 'package:my_phone_contacts/feature/language/app_localizations.dart';
@@ -30,16 +29,6 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [buildPages()],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kBlueColor,
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddContactPage()),
-          );
-        },
       ),
     );
   }
