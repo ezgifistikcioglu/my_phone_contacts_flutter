@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
-import 'package:my_phone_contacts/feature/contacts/read_contacts.dart';
+import 'package:my_phone_contacts/feature/contacts/crud/read_contacts.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
 import 'package:my_phone_contacts/feature/language/app_localizations.dart';
 import 'package:my_phone_contacts/widgets/change_language_dialog.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,6 +20,80 @@ class _HomeState extends State<Home> {
   final _cSearch = TextEditingController();
   bool searching = false;
   int index = 0;
+  bool? hasPermission;
+
+  @override
+  void initState() {
+    super.initState();
+    _askPermissions();
+  }
+
+  Future<void> _askPermissions() async {
+    PermissionStatus? permissionStatus;
+    while (permissionStatus != PermissionStatus.granted) {
+      try {
+        permissionStatus = await _getContactPermission();
+        if (permissionStatus != PermissionStatus.granted) {
+          hasPermission = false;
+          _handleInvalidPermissions(permissionStatus);
+        } else {
+          hasPermission = true;
+        }
+      } catch (e) {
+        if (await showPlatformDialog(
+                context: context,
+                builder: (context) {
+                  return PlatformAlertDialog(
+                    title: const Text('Contact Permissions'),
+                    content: const Text(
+                        'We are having problems retrieving permissions.  Would you like to '
+                        'open the app settings to fix?'),
+                    actions: [
+                      PlatformDialogAction(
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                        child: const Text('Close'),
+                      ),
+                      PlatformDialogAction(
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: const Text('Settings'),
+                      ),
+                    ],
+                  );
+                }) ==
+            true) {
+          await openAppSettings();
+        }
+      }
+    }
+  }
+
+  Future<PermissionStatus> _getContactPermission() async {
+    final status = await Permission.contacts.status;
+    if (!status.isGranted) {
+      final result = await Permission.contacts.request();
+      return result;
+    } else {
+      return status;
+    }
+  }
+
+  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.denied) {
+      throw PlatformException(
+          code: 'PERMISSION_DENIED',
+          message: 'Access to location data denied',
+          details: null);
+    } else if (permissionStatus == PermissionStatus.restricted) {
+      throw PlatformException(
+          code: 'PERMISSION_DISABLED',
+          message: 'Location data is not available on device',
+          details: null);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +187,7 @@ class _HomeState extends State<Home> {
           });
         },
       );
+
   Widget _appBarRightIcon(BuildContext context) => IconButton(
         icon: const Icon(Icons.more_vert_rounded),
         onPressed: () {

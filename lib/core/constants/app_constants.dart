@@ -23,7 +23,10 @@ Icon actionIcon = const Icon(Icons.search);
 
 /// MediaQuery
 double getMobileMaxWidth(BuildContext context) =>
-    MediaQuery.of(context).size.width * 0.5;
+    MediaQuery.of(context).size.width * 0.6;
+
+double getMobileMaxHeight(BuildContext context) =>
+    MediaQuery.of(context).size.width * 0.3;
 
 double getWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double getHeight(BuildContext context) => MediaQuery.of(context).size.height;

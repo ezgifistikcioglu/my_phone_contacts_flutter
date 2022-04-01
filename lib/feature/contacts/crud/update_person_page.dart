@@ -4,7 +4,7 @@ import 'package:flutter_contact/contacts.dart';
 import 'package:my_phone_contacts/feature/language/app_localizations.dart';
 import 'package:sunny_dart/sunny_dart.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../../core/constants/app_constants.dart';
 
 class UpdatePersonPage extends StatefulWidget {
   const UpdatePersonPage({

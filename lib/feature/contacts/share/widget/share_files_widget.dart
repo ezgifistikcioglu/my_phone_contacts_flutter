@@ -2,7 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_button_widget.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/textfield_widget.dart';
-import 'package:my_phone_contacts/feature/contacts/share/widget/utils.dart';
+import 'package:my_phone_contacts/utils/utils.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareFilesWidget extends StatefulWidget {

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 
 import 'package:my_phone_contacts/feature/contacts/tiles.dart';
-import 'package:my_phone_contacts/feature/contacts/update_person_page.dart';
+import 'package:my_phone_contacts/feature/contacts/crud/update_person_page.dart';
 
-import '../../core/constants/app_constants.dart';
-import 'extensions.dart';
+import '../../../core/constants/app_constants.dart';
+import '../../../utils/extensions.dart';
 
 class PersonDetailsPage extends StatefulWidget {
   const PersonDetailsPage(

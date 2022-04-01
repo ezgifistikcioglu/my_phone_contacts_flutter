@@ -24,6 +24,7 @@ dependencies:
   sunny_dart: ^0.11.0+8
   url_launcher: ^6.0.20
 
+
 dev_dependencies:
   flutter_lints: ^1.0.0
 flutter_test:

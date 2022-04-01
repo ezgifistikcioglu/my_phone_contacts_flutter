@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-import 'edit_label.dart';
+import 'crud/edit_label.dart';
 
 class ItemsTile extends StatefulWidget {
   const ItemsTile(

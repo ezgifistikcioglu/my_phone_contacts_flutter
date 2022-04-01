@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 import 'package:full_text_search/full_text_search.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
-import 'package:my_phone_contacts/feature/contacts/person_details_page.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:my_phone_contacts/feature/contacts/crud/person_details_page.dart';
 import 'package:sunny_dart/sunny_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +25,6 @@ class _ReadContactsState extends State<ReadContacts> {
     super.initState();
     listContacts = [];
     _contactService = UnifiedContacts;
-    readContacts();
     refreshContacts();
   }
 
@@ -91,7 +89,12 @@ class _ReadContactsState extends State<ReadContacts> {
                 _listViewBuilderForContactList(),
               ],
             )
-          : _contactProgressIndicatorColumn,
+          : Padding(
+              padding: EdgeInsets.only(
+                  top: getMobileMaxWidth(context),
+                  left: getMobileMaxHeight(context)),
+              child: _contactProgressIndicatorColumn,
+            ),
     );
   }
 
@@ -166,15 +169,14 @@ class _ReadContactsState extends State<ReadContacts> {
         color: kBlueColor,
       );
 
-  Column get _contactProgressIndicatorColumn => Column(
-        mainAxisSize: MainAxisSize.max,
+  Widget get _contactProgressIndicatorColumn => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [_contactProgressIndicator, const Text(readContactText)],
       );
 
-  Widget get _contactProgressIndicator => const Center(
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.red,
-        ),
+  Widget get _contactProgressIndicator => const CircularProgressIndicator(
+        backgroundColor: Colors.red,
       );
 
   Future<void> _makePhoneCall(String url) async {
@@ -182,33 +184,6 @@ class _ReadContactsState extends State<ReadContacts> {
       await launch(url);
     } else {
       throw 'Could not launch $url';
-    }
-  }
-
-  readContacts() async {
-    final PermissionStatus permissionStatus = await _getPermission();
-    if (permissionStatus == PermissionStatus.granted) {
-      Contacts.streamContacts().forEach((contact) {
-        setState(() {
-          if (!listContacts.contains(contact)) {
-            listContacts.add(contact);
-          }
-        });
-      });
-    }
-  }
-
-  //Check contacts permission
-  Future<PermissionStatus> _getPermission() async {
-    final PermissionStatus permission = await Permission.contacts.status;
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.denied) {
-      final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      return permissionStatus[Permission.contacts] ??
-          PermissionStatus.restricted;
-    } else {
-      return permission;
     }
   }
 
