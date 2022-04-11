@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 
-import 'package:my_phone_contacts/feature/contacts/tiles.dart';
 import 'package:my_phone_contacts/feature/contacts/crud/update_person_page.dart';
+import 'package:my_phone_contacts/feature/contacts/tiles.dart';
+import 'package:my_phone_contacts/feature/vcf/vcard_formatter.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../utils/extensions.dart';
 
 class PersonDetailsPage extends StatefulWidget {
+  static const String id = 'contact_details_screen';
   const PersonDetailsPage(
-      Key? key, this.contact, this.onContactDeviceSave, this.contactService)
+      {Key? key,
+      required this.contact,
+      required this.onContactDeviceSave,
+      required this.contactService})
       : super(key: key);
 
   final Contact contact;
@@ -22,7 +27,8 @@ class PersonDetailsPage extends StatefulWidget {
 
 class _PersonDetailsPageState extends State<PersonDetailsPage> {
   late Contact _contact;
-  final _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late List<dynamic> values;
 
   @override
   void initState() {
@@ -42,34 +48,40 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _formKey,
       appBar: AppBar(
-        title: Text(_contact.displayName ?? ''),
-        backgroundColor: kBlueColor,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () async {
-              final res = await widget.contactService.deleteContact(_contact);
-              if (res) {
-                Navigator.pop(context, true);
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => UpdatePersonPage(
-                  contact: _contact,
+          title: Text(_contact.displayName ?? ''),
+          backgroundColor: kBlueColor,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () async {
+                final res = await widget.contactService.deleteContact(_contact);
+                if (res) {
+                  Navigator.pop(context, true);
+                }
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => UpdatePersonPage(
+                    contact: _contact,
+                  ),
                 ),
               ),
             ),
-          ),
-          IconButton(
-              icon: const Icon(Icons.contact_page),
-              onPressed: () => _openExistingContactOnDevice(context)),
-        ],
-      ),
+            IconButton(
+                icon: const Icon(Icons.contact_page),
+                onPressed: () => _openExistingContactOnDevice(context)),
+            IconButton(
+              icon: const Icon(Icons.file_present),
+              onPressed: () {
+                VCardFormatter().shareVCFCard(context, contact: _contact);
+              },
+            ),
+          ]),
       body: SafeArea(
         child: ListView(
           children: <Widget>[

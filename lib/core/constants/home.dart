@@ -5,11 +5,11 @@ import 'package:my_phone_contacts/core/constants/app_constants.dart';
 import 'package:my_phone_contacts/feature/contacts/crud/read_contacts.dart';
 import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
 import 'package:my_phone_contacts/feature/language/app_localizations.dart';
-import 'package:my_phone_contacts/feature/vcf/vcf_files_widget.dart';
 import 'package:my_phone_contacts/widgets/change_language_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Home extends StatefulWidget {
+  static const String id = 'home_screen';
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _cSearch = TextEditingController();
   bool searching = false;
   int index = 0;
@@ -98,16 +98,14 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        appBar: _appBar(context),
-        bottomNavigationBar: buildBottomBar(),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [buildPages()],
-          ),
+    return Scaffold(
+      key: _formKey,
+      appBar: _appBar(context),
+      bottomNavigationBar: buildBottomBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [buildPages()],
         ),
       ),
     );
@@ -144,10 +142,6 @@ class _HomeState extends State<Home> {
             label: context.translate('get_contacts'),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.backup),
-            label: context.translate('back_up'),
-          ),
-          BottomNavigationBarItem(
             icon: const Icon(Icons.share),
             label: context.translate('share_files'),
           ),
@@ -160,8 +154,6 @@ class _HomeState extends State<Home> {
       case 0:
         return const ReadContacts();
       case 1:
-        return const VcfFilesWidget();
-      case 2:
         return const ShareFilesWidget();
       default:
         return Container();

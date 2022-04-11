@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
@@ -11,5 +12,17 @@ class Utils {
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(snackbar);
+  }
+
+  static Future<List<String>> pickFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    List<String>? filesss =
+        result?.files.map((file) => file.path).cast<String>().toList();
+
+    if (filesss == null) {
+      return <String>[];
+    }
+    return filesss;
   }
 }

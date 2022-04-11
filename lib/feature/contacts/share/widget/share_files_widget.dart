@@ -39,7 +39,7 @@ class _ShareFilesWidgetState extends State<ShareFilesWidget> {
                   } else if (controller.text.contains(controller.text)) {
                     Share.share(controller.text);
                   } else {
-                    final filePaths = await pickFile();
+                    final filePaths = await Utils.pickFile();
 
                     Share.shareFiles(filePaths, text: controller.text);
                   }
@@ -49,16 +49,4 @@ class _ShareFilesWidgetState extends State<ShareFilesWidget> {
           ),
         ),
       );
-
-  Future<List<String>> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-    List<String>? filesss =
-        result?.files.map((file) => file.path).cast<String>().toList();
-
-    if (filesss == null) {
-      return <String>[];
-    }
-    return filesss;
-  }
 }

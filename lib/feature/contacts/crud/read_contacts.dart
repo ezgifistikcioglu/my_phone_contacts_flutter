@@ -6,7 +6,10 @@ import 'package:my_phone_contacts/feature/contacts/crud/person_details_page.dart
 import 'package:sunny_dart/sunny_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../vcf/vcard_formatter.dart';
+
 class ReadContacts extends StatefulWidget {
+  static const String id = 'contacts_screen';
   const ReadContacts({Key? key}) : super(key: key);
 
   @override
@@ -16,9 +19,10 @@ class ReadContacts extends StatefulWidget {
 class _ReadContactsState extends State<ReadContacts> {
   late List<Contact> listContacts;
   late ContactService _contactService;
+  late Contact? _contact;
   String? searchTerm;
+  int index = 0;
   final String _searchTerm = '';
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -86,6 +90,13 @@ class _ReadContactsState extends State<ReadContacts> {
                   "Your total contact number: ${listContacts.length}",
                   style: newsletterTextStyle(kPurpColor, 15, null, null),
                 ),
+                IconButton(
+                  icon: const Icon(Icons.file_present),
+                  onPressed: () {
+                    VCardFormatter().shareAllContactVCFCard(context,
+                        listContacts: listContacts);
+                  },
+                ),
                 _listViewBuilderForContactList(),
               ],
             )
@@ -118,16 +129,14 @@ class _ReadContactsState extends State<ReadContacts> {
             ? "${contact.phones.get(0)}"
             : "No contact"),
         onTap: () async {
-          final _contact =
-              await _contactService.getContact(contact.identifier!);
+          _contact = await _contactService.getContact(contact.identifier!);
+
           final res = await Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return PersonDetailsPage(
-              _formKey,
-              _contact!,
-              contactOnDeviceHasBeenUpdated,
-              _contactService,
-            );
+                contact: contact,
+                onContactDeviceSave: contactOnDeviceHasBeenUpdated,
+                contactService: _contactService);
           }));
           if (res != null) {
             await refreshContacts();
