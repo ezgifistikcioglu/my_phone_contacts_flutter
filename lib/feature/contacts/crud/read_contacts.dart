@@ -83,6 +83,7 @@ class _ReadContactsState extends State<ReadContacts> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: MediaQuery.of(context).padding,
       child: (listContacts.isNotEmpty)
           ? Column(
               children: [

@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_contact/contacts.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
 import 'package:my_phone_contacts/feature/contacts/crud/read_contacts.dart';
@@ -17,15 +20,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _cSearch = TextEditingController();
   bool searching = false;
   int index = 0;
   bool? hasPermission;
+  late List<Contact> filteredContacts;
+  final List<Contact> contacts = [];
 
   @override
   void initState() {
     super.initState();
+    filteredContacts = [];
     _askPermissions();
   }
 
@@ -112,7 +118,7 @@ class _HomeState extends State<Home> {
   }
 
   AppBar _appBar(BuildContext context) => AppBar(
-        title: Text(context.translate('app_title')),
+        title: appBarTitleText,
         backgroundColor: kBlueColor,
         actions: <Widget>[
           _searchIconButton,
@@ -165,23 +171,36 @@ class _HomeState extends State<Home> {
         onPressed: () {
           setState(() {
             if (actionIcon.icon == Icons.search) {
-              actionIcon = Icon(
-                Icons.close,
-                color: kGrayColor,
+              actionIcon = Icon(Icons.close);
+              appBarTitleText = TextField(
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: Colors.white),
+                    hintText: "Search...",
+                    hintStyle: TextStyle(color: Colors.white)),
+                onChanged: (value) {
+                  filterContacts(value);
+                  print(value);
+                },
               );
-              appBarTitleText = _appBarTitleTextField;
             } else {
-              _cSearch.clear();
-              searching = false;
-              actionIcon = const Icon(
-                Icons.search,
-              );
-              appBarTitleText = const Text("Contacts");
-              // bloc.getListContact();
+              actionIcon = Icon(Icons.search); //reset to initial state
+              appBarTitleText = Text("Contacts");
+              filteredContacts = contacts;
             }
           });
         },
       );
+  void filterContacts(String value) {
+    var temp = contacts.where((contact) {
+      return contact.displayName!.contains(value);
+    }).toList();
+    setState(() {
+      filteredContacts = temp;
+    });
+  }
 
   Widget _appBarRightIcon(BuildContext context) => IconButton(
         icon: const Icon(Icons.more_vert_rounded),
@@ -192,7 +211,7 @@ class _HomeState extends State<Home> {
       );
 
   Widget get _appBarTitleTextField => TextField(
-        //controller: _cSearch,
+        controller: _cSearch,
         style: TextStyle(
           color: kGrayColor,
         ),

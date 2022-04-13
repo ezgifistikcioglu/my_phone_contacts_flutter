@@ -27,7 +27,7 @@ class PersonDetailsPage extends StatefulWidget {
 
 class _PersonDetailsPageState extends State<PersonDetailsPage> {
   late Contact _contact;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late List<dynamic> values;
 
   @override
