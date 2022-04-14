@@ -1,5 +1,6 @@
 library vcard;
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -444,17 +445,43 @@ class VCardFormatter {
       {required List<Contact?>? listContacts}) async {
     List<Contact?>? _contacts = listContacts;
     try {
-      listContacts!.mapIndexed((element, index) async {
-        var _data = _vcfTemplate(_contacts!.get(index));
+      for (var i = 0; i < listContacts!.length; i++) {
+        var _data = _vcfTemplate(_contacts!.get(i));
         var _vcf = await _createFile(_data!);
         await _readFile();
         _vcf = await _changeExtenstion(".vcf");
         ShareExtend.share(_vcf.path, "file");
-      });
+        final str = await _vcf.readAsString();
+        log(str);
+      }
+
+      // listContacts!.mapIndexed((element, index) async {
+      //   var _data = _vcfTemplate(_contacts!.get(index));
+      //   var _vcf = await _createFile(_data!);
+      //   await _readFile();
+      //   _vcf = await _changeExtenstion(".vcf");
+      //   ShareExtend.share(_vcf.path, "file");
+      // });
     } catch (e) {
       print("Error Creating VCF File $e");
       return null;
     }
+  }
+
+  void shareVCFList(List<Contact> contacts) async {
+    String allContacts = "";
+
+    for (var contact in contacts) {
+      final String? data = _vcfTemplate(contact);
+      allContacts = allContacts + data!;
+    }
+
+    File _vcf = await _createFile(allContacts);
+    await _readFile();
+    _vcf = await _changeExtenstion(".vcf");
+    final str = await _vcf.readAsString();
+    log(str);
+    ShareExtend.share(_vcf.path, "file");
   }
 
   Future<String> get _localPath async {
@@ -464,7 +491,7 @@ class VCardFormatter {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/contact.txt');
+    return File('$path/contact.txt').create(recursive: true);
   }
 
   Future<String> _readFile() async {

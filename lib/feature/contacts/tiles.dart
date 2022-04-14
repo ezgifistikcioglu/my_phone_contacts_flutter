@@ -5,12 +5,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'crud/edit_label.dart';
 
 class ItemsTile extends StatefulWidget {
-  const ItemsTile(
-    Key? key,
-    this._items,
-    this._title,
-    this.onChange,
-  ) : super(key: key);
+  const ItemsTile(this._items, this._title, this.onChange, {Key? key})
+      : super(key: key);
 
   final Iterable<Item> _items;
   final String _title;

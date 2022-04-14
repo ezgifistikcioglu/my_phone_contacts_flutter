@@ -105,15 +105,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _formKey,
       appBar: _appBar(context),
       bottomNavigationBar: buildBottomBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [buildPages()],
-        ),
-      ),
+      body: buildPages(),
     );
   }
 

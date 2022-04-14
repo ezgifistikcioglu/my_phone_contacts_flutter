@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_phone_contacts/core/constants/home.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:my_phone_contacts/feature/contacts/crud/person_details_page.dart';
 
 import 'package:provider/provider.dart';
-import 'feature/contacts/crud/read_contacts.dart';
 import 'feature/language/language_manager.dart';
 import 'providers/language_provider.dart';
 

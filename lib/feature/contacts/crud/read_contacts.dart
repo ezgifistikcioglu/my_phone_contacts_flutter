@@ -94,11 +94,10 @@ class _ReadContactsState extends State<ReadContacts> {
                 IconButton(
                   icon: const Icon(Icons.file_present),
                   onPressed: () {
-                    VCardFormatter().shareAllContactVCFCard(context,
-                        listContacts: listContacts);
+                    VCardFormatter().shareVCFList(listContacts);
                   },
                 ),
-                _listViewBuilderForContactList(),
+                Expanded(child: _listViewBuilderForContactList()),
               ],
             )
           : Padding(

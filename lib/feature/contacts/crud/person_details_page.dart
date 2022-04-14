@@ -48,7 +48,6 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _formKey,
       appBar: AppBar(
           title: Text(_contact.displayName ?? ''),
           backgroundColor: kBlueColor,
@@ -130,12 +129,12 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
               trailing: Text(_contact.jobTitle ?? ''),
             ),
             AddressesTile(_contact.postalAddresses),
-            ItemsTile(_formKey, _contact.phones, 'Phones', () async {
+            ItemsTile(_contact.phones, 'Phones', () async {
               _contact = await Contacts.updateContact(_contact);
               setState(() {});
               widget.onContactDeviceSave(_contact);
             }),
-            ItemsTile(_formKey, _contact.emails, 'Emails', () async {
+            ItemsTile(_contact.emails, 'Emails', () async {
               _contact = await Contacts.updateContact(_contact);
               setState(() {});
               widget.onContactDeviceSave(_contact);
