@@ -27,7 +27,6 @@ class PersonDetailsPage extends StatefulWidget {
 
 class _PersonDetailsPageState extends State<PersonDetailsPage> {
   late Contact _contact;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late List<dynamic> values;
 
   @override
@@ -49,7 +48,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(_contact.displayName ?? ''),
+          title: Text(_contact.displayName ?? unknownText),
           backgroundColor: kBlueColor,
           actions: <Widget>[
             IconButton(
@@ -88,53 +87,30 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
               title: Text('Contact Id: ${_contact.identifier}'),
             ),
             ListTile(
-              title:
-                  Text('Linked Id: ${_contact.unifiedContactId ?? 'Unknown'}'),
+              title: Text(
+                  'Linked Id: ${_contact.unifiedContactId ?? unknownText}'),
             ),
-            ListTile(
-              title: const Text('Last Updated'),
-              trailing: Text(_contact.lastModified?.format() ?? 'Unknown'),
-            ),
-            ListTile(
-              title: const Text('Name'),
-              trailing: Text(_contact.givenName ?? ''),
-            ),
-            ListTile(
-              title: const Text('Middle name'),
-              trailing: Text(_contact.middleName ?? ''),
-            ),
-            ListTile(
-              title: const Text('Family name'),
-              trailing: Text(_contact.familyName ?? ''),
-            ),
-            ListTile(
-              title: const Text('Prefix'),
-              trailing: Text(_contact.prefix ?? ''),
-            ),
-            ListTile(
-              title: const Text('Suffix'),
-              trailing: Text(_contact.suffix ?? ''),
-            ),
+            listTileForDetailPerson(
+                lastUpdatedText, _contact.lastModified?.format()),
+            listTileForDetailPerson(givenNameText, _contact.givenName),
+            listTileForDetailPerson(middleNameText, _contact.middleName),
+            listTileForDetailPerson(familyNameText, _contact.familyName),
+            listTileForDetailPerson(prefixNameText, _contact.prefix),
+            listTileForDetailPerson(suffixNameText, _contact.suffix),
             for (final d in (_contact.dates))
               ListTile(
-                title: Text(d.label ?? ''),
-                trailing: Text(d.date?.format() ?? ''),
+                title: Text(d.label ?? unknownText),
+                trailing: Text(d.date?.format() ?? unknownText),
               ),
-            ListTile(
-              title: const Text('Company'),
-              trailing: Text(_contact.company ?? ''),
-            ),
-            ListTile(
-              title: const Text('Job'),
-              trailing: Text(_contact.jobTitle ?? ''),
-            ),
+            listTileForDetailPerson(companyText, _contact.company),
+            listTileForDetailPerson(jobTitleText, _contact.jobTitle),
             AddressesTile(_contact.postalAddresses),
-            ItemsTile(_contact.phones, 'Phones', () async {
+            ItemsTile(_contact.phones, phoneText, () async {
               _contact = await Contacts.updateContact(_contact);
               setState(() {});
               widget.onContactDeviceSave(_contact);
             }),
-            ItemsTile(_contact.emails, 'Emails', () async {
+            ItemsTile(_contact.emails, emailText, () async {
               _contact = await Contacts.updateContact(_contact);
               setState(() {});
               widget.onContactDeviceSave(_contact);
@@ -142,6 +118,13 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
           ],
         ),
       ),
+    );
+  }
+
+  ListTile listTileForDetailPerson(String title, String? trailing) {
+    return ListTile(
+      title: Text(title),
+      trailing: Text(trailing ?? unknownText),
     );
   }
 }

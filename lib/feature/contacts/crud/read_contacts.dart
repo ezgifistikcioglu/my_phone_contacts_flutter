@@ -19,7 +19,6 @@ class ReadContacts extends StatefulWidget {
 class _ReadContactsState extends State<ReadContacts> {
   late List<Contact> listContacts;
   late ContactService _contactService;
-  late Contact? _contact;
   String? searchTerm;
   int index = 0;
   final String _searchTerm = '';
@@ -112,7 +111,7 @@ class _ReadContactsState extends State<ReadContacts> {
   ListView _listViewBuilderForContactList() => ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: listContacts.length,
       itemBuilder: (context, index) {
         Contact? contact = listContacts.get(index);
@@ -129,8 +128,6 @@ class _ReadContactsState extends State<ReadContacts> {
             ? "${contact.phones.get(0)}"
             : "No contact"),
         onTap: () async {
-          _contact = await _contactService.getContact(contact.identifier!);
-
           final res = await Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return PersonDetailsPage(

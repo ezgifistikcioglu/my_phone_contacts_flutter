@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_contact/contacts.dart';
@@ -20,13 +18,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _cSearch = TextEditingController();
   bool searching = false;
   int index = 0;
   bool? hasPermission;
   late List<Contact> filteredContacts;
   final List<Contact> contacts = [];
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -115,7 +112,6 @@ class _HomeState extends State<Home> {
         title: appBarTitleText,
         backgroundColor: kBlueColor,
         actions: <Widget>[
-          _searchIconButton,
           IconButton(
             icon: const Icon(
               Icons.language,
@@ -160,42 +156,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Widget get _searchIconButton => IconButton(
-        icon: actionIcon,
-        onPressed: () {
-          setState(() {
-            if (actionIcon.icon == Icons.search) {
-              actionIcon = Icon(Icons.close);
-              appBarTitleText = TextField(
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: Colors.white),
-                    hintText: "Search...",
-                    hintStyle: TextStyle(color: Colors.white)),
-                onChanged: (value) {
-                  filterContacts(value);
-                  print(value);
-                },
-              );
-            } else {
-              actionIcon = Icon(Icons.search); //reset to initial state
-              appBarTitleText = Text("Contacts");
-              filteredContacts = contacts;
-            }
-          });
-        },
-      );
-  void filterContacts(String value) {
-    var temp = contacts.where((contact) {
-      return contact.displayName!.contains(value);
-    }).toList();
-    setState(() {
-      filteredContacts = temp;
-    });
-  }
-
   Widget _appBarRightIcon(BuildContext context) => IconButton(
         icon: const Icon(Icons.more_vert_rounded),
         onPressed: () {
@@ -203,18 +163,4 @@ class _HomeState extends State<Home> {
         },
         tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
       );
-
-  Widget get _appBarTitleTextField => TextField(
-        controller: _cSearch,
-        style: TextStyle(
-          color: kGrayColor,
-        ),
-        autofocus: true,
-        decoration: _appBarSearchInput,
-      );
-
-  InputDecoration get _appBarSearchInput => InputDecoration(
-      prefixIcon: Icon(Icons.search, color: kGrayColor),
-      hintText: searchLabelText,
-      hintStyle: TextStyle(color: kGrayColor));
 }

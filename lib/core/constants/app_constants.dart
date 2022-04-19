@@ -17,6 +17,24 @@ const String readContactText = "Reading Contacts...";
 Widget appBarTitleText = const Text("Get Phone Contact List");
 Widget addContactAppBarTitleText = const Text("Select Contact");
 const String searchLabelText = "Search contact name";
+const String homeText = 'home';
+const String givenNameText = 'First Name';
+const String middleNameText = 'Middle Name';
+const String familyNameText = 'Family Name';
+const String prefixNameText = 'Prefix Name';
+const String suffixNameText = 'Suffix Name';
+const String phoneText = 'Phone';
+const String emailText = 'E-mail';
+const String companyText = 'Company Name';
+const String birthdayText = 'Birthday';
+const String jobTitleText = 'Job Title';
+const String streetText = 'Street';
+const String cityText = 'City';
+const String regionText = 'Region';
+const String postcodeText = 'Postal Code';
+const String countryText = 'Country';
+const String unknownText = '';
+const String lastUpdatedText = 'Last Updated';
 
 /// Icons
 Icon actionIcon = const Icon(Icons.search);
@@ -50,10 +68,11 @@ TextStyle newsletterTextStyle(Color? color, double? fontSize,
         fontWeight: fontWeight ?? FontWeight.normal);
 
 TextFormField textFormField(String? initialValue, String? decoration,
-    {Function(String?)? onSaved}) {
+    {TextInputType? keyboardType, Function(String?)? onSaved}) {
   return TextFormField(
     initialValue: initialValue ?? '',
     decoration: InputDecoration(labelText: decoration ?? ''),
+    keyboardType: keyboardType ?? TextInputType.text,
     onSaved: onSaved,
   );
 }

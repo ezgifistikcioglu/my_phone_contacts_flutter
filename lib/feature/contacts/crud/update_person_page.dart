@@ -31,19 +31,19 @@ class _UpdatePersonPageState extends State<UpdatePersonPage> {
     contact = widget.contact;
     address = contact.postalAddresses.firstOrNull();
     if (address == null) {
-      address = PostalAddress(label: 'home');
+      address = PostalAddress(label: homeText);
       contact.postalAddresses.add(address!);
     }
 
     email = contact.emails.firstOrNull();
     if (email == null) {
-      email = Item(label: 'home');
+      email = Item(label: homeText);
       contact.emails.add(email!);
     }
 
     phone = contact.phones.firstOrNull();
     if (phone == null) {
-      phone = Item(label: 'home');
+      phone = Item(label: homeText);
       contact.phones.add(phone!);
     }
   }
@@ -77,94 +77,86 @@ class _UpdatePersonPageState extends State<UpdatePersonPage> {
             children: <Widget>[
               textFormField(
                 contact.givenName,
-                'First name',
+                givenNameText,
                 onSaved: (v) => contact.givenName = v,
               ),
-              TextFormField(
-                initialValue: contact.givenName ?? '',
-                decoration: const InputDecoration(labelText: 'First name'),
-                onSaved: (v) => contact.givenName = v,
-              ),
-              TextFormField(
-                initialValue: contact.middleName ?? '',
-                decoration: const InputDecoration(labelText: 'Middle name'),
+              textFormField(
+                contact.middleName ?? '',
+                middleNameText,
                 onSaved: (v) => contact.middleName = v,
               ),
-              TextFormField(
-                initialValue: contact.familyName ?? '',
-                decoration: const InputDecoration(labelText: 'Last name'),
+              textFormField(
+                contact.familyName ?? '',
+                familyNameText,
                 onSaved: (v) => contact.familyName = v,
               ),
-              TextFormField(
-                initialValue: contact.prefix ?? '',
-                decoration: const InputDecoration(labelText: 'Prefix'),
+              textFormField(
+                contact.prefix ?? '',
+                prefixNameText,
                 onSaved: (v) => contact.prefix = v,
               ),
-              TextFormField(
-                initialValue: contact.suffix ?? '',
-                decoration: const InputDecoration(labelText: 'Suffix'),
+              textFormField(
+                contact.suffix ?? '',
+                suffixNameText,
                 onSaved: (v) => contact.suffix = v,
               ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Phone'),
-                initialValue: phone?.value,
+              textFormField(
+                phone?.value,
+                phoneText,
                 onSaved: (v) => phone?.value = v,
                 keyboardType: TextInputType.phone,
               ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'E-mail'),
-                initialValue: email?.value,
+              textFormField(
+                email?.value,
+                emailText,
                 onSaved: (v) => email?.value = v,
                 keyboardType: TextInputType.emailAddress,
               ),
-              TextFormField(
-                initialValue: contact.company ?? '',
-                decoration: const InputDecoration(labelText: 'Company'),
+              textFormField(
+                contact.company ?? '',
+                companyText,
                 onSaved: (v) => contact.company = v,
               ),
-              TextFormField(
-                initialValue: contact.birthday?.dateOrValue ?? '',
-                decoration: const InputDecoration(labelText: 'Birthday'),
-                onSaved: (v) {
-                  final parsed = FlexiDate.from(v);
-                  if (parsed == null) {
-                    contact.birthday = null;
-                  } else {
-                    contact.birthday = ContactDate.ofDate(
-                      label: 'birthday',
-                      date: parsed,
-                    );
-                  }
-                },
-              ),
-              TextFormField(
-                initialValue: contact.jobTitle ?? '',
-                decoration: const InputDecoration(labelText: 'Job'),
+              textFormField(contact.birthday?.dateOrValue ?? '', birthdayText,
+                  onSaved: (v) {
+                final parsed = FlexiDate.from(v);
+                if (parsed == null) {
+                  contact.birthday = null;
+                } else {
+                  contact.birthday = ContactDate.ofDate(
+                    label: birthdayText,
+                    date: parsed,
+                  );
+                }
+              }, keyboardType: TextInputType.datetime),
+              textFormField(
+                contact.jobTitle ?? '',
+                jobTitleText,
                 onSaved: (v) => contact.jobTitle = v,
               ),
-              TextFormField(
-                initialValue: address?.street ?? '',
-                decoration: const InputDecoration(labelText: 'Street'),
+              textFormField(
+                address?.street ?? '',
+                streetText,
                 onSaved: (v) => address?.street = v,
               ),
-              TextFormField(
-                initialValue: address?.city ?? '',
-                decoration: const InputDecoration(labelText: 'City'),
+              textFormField(
+                address?.city ?? '',
+                cityText,
                 onSaved: (v) => address?.city = v,
               ),
-              TextFormField(
-                initialValue: address?.region ?? '',
-                decoration: const InputDecoration(labelText: 'Region'),
+              textFormField(
+                address?.region ?? '',
+                regionText,
                 onSaved: (v) => address?.region = v,
               ),
-              TextFormField(
-                initialValue: address?.postcode ?? '',
-                decoration: const InputDecoration(labelText: 'Postal code'),
+              textFormField(
+                address?.postcode ?? '',
+                postcodeText,
                 onSaved: (v) => address?.postcode = v,
               ),
-              TextFormField(
-                initialValue: address?.country ?? '',
-                decoration: const InputDecoration(labelText: 'Country'),
+              textFormField(
+                address?.country ?? '',
+                countryText,
                 onSaved: (v) => address?.country = v,
               ),
             ],
