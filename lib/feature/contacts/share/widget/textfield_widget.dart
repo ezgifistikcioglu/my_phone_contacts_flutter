@@ -14,21 +14,22 @@ class TextfieldWidget extends StatelessWidget {
         controller: controller,
         style: TextStyle(
           color: kBlackColor,
-          fontSize: 20,
+          fontSize: 17,
         ),
         decoration: InputDecoration(
-          hintText: 'Enter Caption',
+          hintText: enterMessageText,
           hintStyle: TextStyle(color: kGrayColor),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: Colors.white),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(
-              color: kPinkColor,
-            ),
-          ),
+          enabledBorder: _outlineInputBorder,
+          focusedBorder: _outlineInputBorder,
         ),
+      );
+
+  OutlineInputBorder get _outlineInputBorder => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: _borderSide,
+      );
+
+  BorderSide get _borderSide => BorderSide(
+        color: kPurpColor,
       );
 }

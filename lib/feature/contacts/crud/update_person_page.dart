@@ -74,7 +74,7 @@ class _UpdatePersonPageState extends State<UpdatePersonPage> {
         child: Form(
           key: _formKey,
           child: ListView(
-            children: <Widget>[
+            children: [
               textFormField(
                 contact.givenName,
                 givenNameText,

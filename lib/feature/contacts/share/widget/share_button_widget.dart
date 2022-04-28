@@ -13,9 +13,9 @@ class ShareButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) => ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
             primary: kBlueColor,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: smallEdgePadding(context),
             shadowColor: kPinkColor),
-        label: const Text('SHARE', style: TextStyle(fontSize: 20)),
+        label: const Text(shareMessageText, style: TextStyle(fontSize: 15)),
         icon: const Icon(Icons.share),
         onPressed: onClicked,
       );

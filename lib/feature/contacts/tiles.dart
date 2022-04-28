@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
+import '../../core/constants/app_constants.dart';
 import 'crud/edit_label.dart';
 
 class ItemsTile extends StatefulWidget {
@@ -22,17 +23,23 @@ class _ItemsTileState extends State<ItemsTile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ListTile(title: Text(widget._title)),
+        listTileForDetailPerson(widget._title, ""),
         Column(
           children: widget._items
               .map(
                 (i) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: smallEdgePadding(context),
                   child: ListTile(
-                    title: Text(i.label ?? ''),
-                    trailing: Text(i.value ?? ''),
+                    title: Text(
+                      i.label ?? unknownText,
+                      textScaleFactor: 1.0,
+                    ),
+                    dense: true,
+                    tileColor: kBlueGrayColor,
+                    focusColor: kPurpColor,
+                    leading: const Icon(Icons.phone_android),
+                    trailing: Text(i.value ?? unknownText),
                     onTap: () async {
-                      /// Pop something to edit label
                       final newLabel = await showPlatformDialog<String>(
                           context: context,
                           builder: (context) {
@@ -63,40 +70,44 @@ class AddressesTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const ListTile(title: Text('Addresses')),
+      children: [
+        listTileForDetailPerson(addressesText, ""),
         Column(
           children: _addresses
               .map((a) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: smallEdgePadding(context),
                     child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text('Street'),
-                          trailing: Text(a.street ?? ''),
-                        ),
-                        ListTile(
-                          title: const Text('Postcode'),
-                          trailing: Text(a.postcode ?? ''),
-                        ),
-                        ListTile(
-                          title: const Text('City'),
-                          trailing: Text(a.city ?? ''),
-                        ),
-                        ListTile(
-                          title: const Text('Region'),
-                          trailing: Text(a.region ?? ''),
-                        ),
-                        ListTile(
-                          title: const Text('Country'),
-                          trailing: Text(a.country ?? ''),
-                        ),
+                      children: [
+                        _listTileForDetail(
+                            a.street!, streetText, Icons.my_location_outlined),
+                        _listTileForDetail(
+                            a.postcode!, postcodeText, Icons.local_post_office),
+                        _listTileForDetail(
+                            a.city!, cityText, Icons.location_city),
+                        _listTileForDetail(a.region!, regionText,
+                            Icons.real_estate_agent_outlined),
+                        _listTileForDetail(
+                            a.country!, countryText, Icons.art_track_rounded),
                       ],
                     ),
                   ))
               .toList(),
         ),
       ],
+    );
+  }
+
+  Widget _listTileForDetail(
+      String? postAdress, String data, IconData iconData) {
+    return Card(
+      child: ListTile(
+        title: Text(data),
+        trailing: Text(postAdress ?? unknownText),
+        dense: true,
+        focusColor: kPurpColor,
+        leading: Icon(iconData),
+        tileColor: kBlueGrayColor,
+      ),
     );
   }
 }

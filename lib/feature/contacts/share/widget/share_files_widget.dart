@@ -4,6 +4,8 @@ import 'package:my_phone_contacts/feature/contacts/share/widget/textfield_widget
 import 'package:my_phone_contacts/utils/utils.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../core/constants/app_constants.dart';
+
 class ShareFilesWidget extends StatefulWidget {
   const ShareFilesWidget({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class _ShareFilesWidgetState extends State<ShareFilesWidget> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(24),
+        padding: smallEdgePadding(context),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +32,7 @@ class _ShareFilesWidgetState extends State<ShareFilesWidget> {
               TextfieldWidget(
                 controller: controller,
               ),
-              const SizedBox(height: 32),
+              sizedBoxTwenty,
               ShareButtonWidget(
                 onClicked: () async {
                   if (controller.text.isEmpty) {

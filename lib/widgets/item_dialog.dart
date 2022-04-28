@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_phone_contacts/core/constants/app_constants.dart';
 
 class ItemDialog extends StatelessWidget {
   const ItemDialog({
@@ -26,12 +27,8 @@ class ItemDialog extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 16.0,
-            ),
-            child: Text(
-              text,
-            ),
+            padding: smallEdgePadding(context),
+            child: Text(text),
           ),
         ],
       ),

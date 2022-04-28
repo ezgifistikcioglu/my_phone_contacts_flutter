@@ -6,7 +6,7 @@ class Utils {
     final snackbar = SnackBar(
       content: Text(message, style: const TextStyle(fontSize: 20)),
       backgroundColor: Colors.red,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 500),
     );
 
     ScaffoldMessenger.of(context)

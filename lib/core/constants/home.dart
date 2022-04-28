@@ -123,7 +123,6 @@ class _HomeState extends State<Home> {
               );
             },
           ),
-          _appBarRightIcon(context)
         ],
       );
 
@@ -155,12 +154,4 @@ class _HomeState extends State<Home> {
         return Container();
     }
   }
-
-  Widget _appBarRightIcon(BuildContext context) => IconButton(
-        icon: const Icon(Icons.more_vert_rounded),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-      );
 }

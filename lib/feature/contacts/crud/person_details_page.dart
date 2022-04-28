@@ -83,13 +83,6 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
       body: SafeArea(
         child: ListView(
           children: <Widget>[
-            ListTile(
-              title: Text('Contact Id: ${_contact.identifier}'),
-            ),
-            ListTile(
-              title: Text(
-                  'Linked Id: ${_contact.unifiedContactId ?? unknownText}'),
-            ),
             listTileForDetailPerson(
                 lastUpdatedText, _contact.lastModified?.format()),
             listTileForDetailPerson(givenNameText, _contact.givenName),
@@ -118,13 +111,6 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
           ],
         ),
       ),
-    );
-  }
-
-  ListTile listTileForDetailPerson(String title, String? trailing) {
-    return ListTile(
-      title: Text(title),
-      trailing: Text(trailing ?? unknownText),
     );
   }
 }
