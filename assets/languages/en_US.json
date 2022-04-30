@@ -13,5 +13,7 @@
     "share_text": "Share text",
     "share_files": "Share files",
     "back_up": "Backup",
-    "update_contact": "Update Contact"
+    "update_contact": "Update Contact",
+    "total_contact": "Your total contact number:",
+    "get_contact_list": "Get Phone Contact List"
   }

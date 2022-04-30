@@ -6,7 +6,7 @@ Color kSecondaryColor = const Color.fromRGBO(96, 108, 56, 1);
 Color kSecondarColor = const Color.fromRGBO(40, 54, 24, 1);
 Color kPinkColor = const Color.fromRGBO(113, 63, 71, 1);
 Color kBlueColor = const Color.fromRGBO(104, 200, 205, 1);
-Color kBlueGrayColor = Color.fromARGB(255, 161, 196, 199);
+Color kBlueGrayColor = const Color.fromARGB(255, 161, 196, 199);
 Color kPurpColor = const Color.fromRGBO(133, 83, 171, 1);
 Color kDangerColor = const Color.fromRGBO(249, 77, 30, 1);
 Color kGrayColor = const Color.fromRGBO(166, 177, 187, 1);
@@ -16,7 +16,6 @@ Color kCaptionColor = const Color.fromRGBO(163, 177, 187, 1);
 
 /// Strings
 const String readContactText = "Reading Contacts...";
-Widget appBarTitleText = const Text("Get Phone Contact List");
 Widget addContactAppBarTitleText = const Text("Select Contact");
 const String searchLabelText = "Search contact name";
 const String shareMessageText = 'Share message';
@@ -49,7 +48,7 @@ double getMobileMaxWidth(BuildContext context) =>
     MediaQuery.of(context).size.width * 0.6;
 
 double getMobileMaxHeight(BuildContext context) =>
-    MediaQuery.of(context).size.width * 0.3;
+    MediaQuery.of(context).size.width * 0.32;
 
 double getWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double getHeight(BuildContext context) => MediaQuery.of(context).size.height;

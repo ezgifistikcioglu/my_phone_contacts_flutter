@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contact/contacts.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../core/constants/app_constants.dart';
-import 'crud/edit_label.dart';
 
 class ItemsTile extends StatefulWidget {
   const ItemsTile(this._items, this._title, this.onChange, {Key? key})
@@ -39,18 +37,6 @@ class _ItemsTileState extends State<ItemsTile> {
                     focusColor: kPurpColor,
                     leading: const Icon(Icons.phone_android),
                     trailing: Text(i.value ?? unknownText),
-                    onTap: () async {
-                      final newLabel = await showPlatformDialog<String>(
-                          context: context,
-                          builder: (context) {
-                            return EditLabelPage(label: i.label ?? 'No Label');
-                          });
-
-                      setState(() {
-                        i.label = newLabel;
-                      });
-                      widget.onChange.call();
-                    },
                   ),
                 ),
               )
@@ -79,15 +65,15 @@ class AddressesTile extends StatelessWidget {
                     child: Column(
                       children: [
                         _listTileForDetail(
-                            a.street!, streetText, Icons.my_location_outlined),
+                            a.street, streetText, Icons.my_location_outlined),
                         _listTileForDetail(
-                            a.postcode!, postcodeText, Icons.local_post_office),
+                            a.postcode, postcodeText, Icons.local_post_office),
                         _listTileForDetail(
-                            a.city!, cityText, Icons.location_city),
-                        _listTileForDetail(a.region!, regionText,
+                            a.city, cityText, Icons.location_city),
+                        _listTileForDetail(a.region, regionText,
                             Icons.real_estate_agent_outlined),
                         _listTileForDetail(
-                            a.country!, countryText, Icons.art_track_rounded),
+                            a.country, countryText, Icons.art_track_rounded),
                       ],
                     ),
                   ))
@@ -104,7 +90,6 @@ class AddressesTile extends StatelessWidget {
         title: Text(data),
         trailing: Text(postAdress ?? unknownText),
         dense: true,
-        focusColor: kPurpColor,
         leading: Icon(iconData),
         tileColor: kBlueGrayColor,
       ),

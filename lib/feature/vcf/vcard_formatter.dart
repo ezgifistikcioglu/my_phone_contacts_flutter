@@ -114,7 +114,7 @@ class VCardFormatter {
         str += "TITLE:${_contact.jobTitle ?? ""}\n";
       }
 
-      if (_contact.phones != null && _contact.phones.isNotEmpty) {
+      if (_contact.phones.isNotEmpty) {
         int _index = 1;
         for (var _item in _contact.phones) {
           str +=
@@ -124,7 +124,7 @@ class VCardFormatter {
         }
       }
 
-      if (_contact.emails != null && _contact.emails.isNotEmpty) {
+      if (_contact.emails.isNotEmpty) {
         int _index = 1;
         for (var _item in _contact.emails) {
           str +=
@@ -134,8 +134,7 @@ class VCardFormatter {
         }
       }
 
-      if (_contact.postalAddresses != null &&
-          _contact.postalAddresses.isNotEmpty) {
+      if (_contact.postalAddresses.isNotEmpty) {
         int _index = 1;
         for (var _item in _contact.postalAddresses) {
           str +=
