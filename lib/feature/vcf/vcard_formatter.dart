@@ -1,8 +1,9 @@
 library vcard;
 
-import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_extend/share_extend.dart';
@@ -34,7 +35,7 @@ class VCardFormatter {
         _vcf = await _changeExtenstion(".vcf");
         ShareExtend.share(_vcf.path, "file");
         final str = await _vcf.readAsString();
-        log(str);
+        print(str);
       }
     } catch (e) {
       print("Error Creating VCF File $e");
@@ -42,7 +43,34 @@ class VCardFormatter {
     }
   }
 
-  void shareVCFList(List<Contact> contacts) async {
+  saveToFile(filename, List<Contact>? contacts) async {
+    String allContacts = "";
+    for (var contact in contacts!) {
+      String? data = _vcfTemplate(contact);
+      allContacts = allContacts + data!;
+    }
+    final directory = (await getExternalStorageDirectory());
+    final path = directory!.path;
+    final file = File('$path/$filename');
+    file.writeAsString(allContacts).then((value) {
+      print("vCard path: " + value.path);
+    });
+  }
+
+  String generateRandomString(int len) {
+    var r = Random();
+    var now = DateTime.now();
+    var formatter = DateFormat('yyyy-MM-dd');
+
+    const String _chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    String formattedDate = "${formatter.format(now)} - $_chars";
+    print("**********************" + formattedDate);
+    return List.generate(
+        len, (index) => formattedDate[r.nextInt(formattedDate.length)]).join();
+  }
+
+  void shareVCFList(List<Contact> contacts, int index) async {
     String allContacts = "";
 
     for (var contact in contacts) {
@@ -54,8 +82,11 @@ class VCardFormatter {
     await _readFile();
     _vcf = await _changeExtenstion(".vcf");
     final str = await _vcf.readAsString();
-    log(str);
-    ShareExtend.share(_vcf.path, "file");
+    print(str);
+    if (str.isNotEmpty) {
+      saveToFile(generateRandomString(5), contacts);
+      ShareExtend.share(_vcf.path, "file");
+    }
   }
 
   Future<String> get _localPath async {
@@ -91,6 +122,22 @@ class VCardFormatter {
     var _newFile = file.renameSync(file.path.replaceAll(".txt", ext));
     print("New Path: ${_newFile.path}");
     return _newFile;
+  }
+
+  getVCFList(List<Contact> contacts) async {
+    String allContacts = "";
+
+    for (var contact in contacts) {
+      final String? data = _vcfTemplate(contact);
+      allContacts = allContacts + data!;
+    }
+
+    File _vcf = await _createFile(allContacts);
+    await _readFile();
+    _vcf = await _changeExtenstion(".vcf");
+    final str = await _vcf.readAsString();
+    print("HELLO:: " + str);
+    return str;
   }
 
   String? _vcfTemplate(Contact? contact) {

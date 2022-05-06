@@ -6,8 +6,8 @@ import 'package:flutter_contact/contacts.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:full_text_search/searches.dart';
 import 'package:my_phone_contacts/core/constants/app_constants.dart';
-import 'package:my_phone_contacts/feature/contacts/share/widget/share_files_widget.dart';
 import 'package:my_phone_contacts/feature/language/app_localizations.dart';
+import 'package:my_phone_contacts/feature/vcf/file_read_write.dart';
 import 'package:my_phone_contacts/widgets/change_language_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sunny_dart/extensions.dart';
@@ -140,7 +140,7 @@ class _HomeState extends State<Home> {
               Icons.file_present,
             ),
             onPressed: () {
-              VCardFormatter().shareVCFList(listContacts);
+              VCardFormatter().shareVCFList(listContacts, index);
             },
           ),
         ],
@@ -157,8 +157,8 @@ class _HomeState extends State<Home> {
             label: context.translate('get_contacts'),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.share),
-            label: context.translate('share_files'),
+            icon: const Icon(Icons.backup_rounded),
+            label: context.translate('past_contact_list'),
           ),
         ],
         onTap: (int index) => setState(() => this.index = index),
@@ -184,7 +184,7 @@ class _HomeState extends State<Home> {
                 ),
         );
       case 1:
-        return const ShareFilesWidget();
+        return FileOperationsScreen(contacts: listContacts);
       default:
         return Container();
     }
@@ -215,9 +215,9 @@ class _HomeState extends State<Home> {
                 ))
             : CircleAvatar(backgroundImage: MemoryImage(image!)),
         title: Text("${contact.displayName}"),
-        subtitle: Text((contact.phones.isNotEmpty)
-            ? "${contact.phones.get(0)}"
-            : "No contact"),
+        subtitle: Text((contact.phones.isNotNullOrEmpty)
+            ? "${contact.phones.first.value}"
+            : ""),
         onTap: () async {
           final res = await Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {

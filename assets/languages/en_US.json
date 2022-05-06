@@ -15,5 +15,6 @@
     "back_up": "Backup",
     "update_contact": "Update Contact",
     "total_contact": "Your total contact number:",
-    "get_contact_list": "Get Phone Contact List"
+    "get_contact_list": "Get Phone Contact List",
+    "past_contact_list": "Past contacts backups"
   }
