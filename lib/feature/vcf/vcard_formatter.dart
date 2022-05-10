@@ -60,14 +60,14 @@ class VCardFormatter {
   String generateRandomString(int len) {
     var r = Random();
     var now = DateTime.now();
-    var formatter = DateFormat('yyyy-MM-dd');
+    var formatter = DateFormat('yyyy-MM-dd').format(now);
 
     const String _chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    String formattedDate = "${formatter.format(now)} - $_chars";
-    print("**********************" + formattedDate);
-    return List.generate(
-        len, (index) => formattedDate[r.nextInt(formattedDate.length)]).join();
+    String formattedDate = "$formatter - ";
+
+    return formattedDate +
+        List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
   }
 
   void shareVCFList(List<Contact> contacts, int index) async {

@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:provider/provider.dart';
 import 'feature/language/language_manager.dart';
-import 'feature/vcf/file_read_write.dart';
 import 'providers/language_provider.dart';
 
 void main() async {
